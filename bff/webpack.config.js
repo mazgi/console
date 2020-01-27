@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path')
-const nodeExternals = require('webpack-node-externals')
 
 module.exports = {
   mode: 'production',
-  entry: './index.ts',
+  target: 'node',
   module: {
     rules: [
       {
@@ -21,15 +20,7 @@ module.exports = {
   },
   resolve: {
     mainFields: ['main'],
-    modules: [
-      'node_modules',
-      path.resolve(__dirname, 'config'),
-      path.resolve(__dirname, 'db'),
-      path.resolve(__dirname, 'entities'),
-      path.resolve(__dirname, 'lib')
-    ],
+    modules: ['node_modules', path.resolve(__dirname, 'src')],
     extensions: ['.ts', '.json', '.js', '.mjs']
-  },
-  target: 'node',
-  externals: [nodeExternals()]
+  }
 }
