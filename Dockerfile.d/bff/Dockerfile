@@ -1,40 +1,25 @@
-FROM node:12 as base
-
-# Set in non-interactive mode.
-ENV DEBIAN_FRONTEND=noninteractive
-
-RUN apt-get update \
-  && apt-get install --assume-yes --no-install-recommends locales procps dialog \
-  && echo 'en_US.UTF-8 UTF-8' > /etc/locale.gen \
-  && locale-gen
-
-# Reset DEBIAN_FRONTEND to default(`dialog`).
-# If you no need `dialog`, you can set `DEBIAN_FRONTEND=readline`.
-# see also: man 7 debconf
-ENV DEBIAN_FRONTEND=
-
+FROM node:12-alpine as base
 
 # ================================
-# Begin development stage
-FROM base as development
-ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update \
-  && apt-get install --assume-yes --no-install-recommends git tmux zsh jq
-ENV DEBIAN_FRONTEND=
-# End development stage
+# Begin builder stage
+FROM base as builder
+COPY rootfs /
+WORKDIR /workspace
+RUN npm install\
+  && npm run test\
+  && npm run build
+# End builder stage
 # ================================
-
 
 # ================================
 # Begin production stage
 FROM base as production
-ENV DEBIAN_FRONTEND=noninteractive
-COPY source /workspace/
-WORKDIR /workspace
-RUN npm install
-# RUN npm install \
-#   && npm run build
-CMD ["npm", "run", "dev"]
-# CMD ["npm", "run", "start"]
+# See https://github.com/nodejs/docker-node/blob/8bcc1712f430dcf5f22fffd6aef3db82698c296c/docs/BestPractices.md#handling-kernel-signals
+RUN apk add --no-cache tini
+ENTRYPOINT ["/sbin/tini", "--"]
+# COPY --from=builder /workspace/dist/main.js /app/
+RUN mkdir -p /data/config/bff/ && echo '{}' > /data/config/bff/config.json
+COPY --from=builder /workspace/dist/main.js /app/
+CMD ["node", "/app/main.js"]
 # End production stage
 # ================================

@@ -1,0 +1,3 @@
+/config.json
+/seed.*.json
+!/seed.*.default.json

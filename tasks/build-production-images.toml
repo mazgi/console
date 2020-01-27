@@ -1,0 +1,45 @@
+[config]
+skip_core_tasks = true
+min_version = "0.26.0"
+
+[tasks.prepare]
+cwd = "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../"
+
+[tasks.bff]
+alias="build-bff"
+
+[tasks.build-bff]
+dependencies = [
+  "prepare"
+]
+script = [
+'''
+rm -rf Dockerfile.d/bff/rootfs
+mkdir -p Dockerfile.d/bff/rootfs/data/config/bff
+echo '{}' > Dockerfile.d/bff/rootfs/data/config/bff/config.json
+rsync --archive --exclude='node_modules' --exclude='ormconfig.json' bff/ Dockerfile.d/bff/rootfs/workspace
+docker build --no-cache --target production Dockerfile.d/bff
+'''
+]
+
+[tasks.frontend]
+alias="build-frontend"
+
+[tasks.build-frontend]
+dependencies = [
+  "prepare"
+]
+script = [
+'''
+rm -rf Dockerfile.d/frontend/rootfs
+mkdir -p Dockerfile.d/frontend/rootfs/
+rsync --archive --exclude='node_modules' --exclude='.next' frontend/ Dockerfile.d/frontend/rootfs/workspace
+docker build --no-cache --target production Dockerfile.d/frontend
+'''
+]
+
+[tasks.default]
+dependencies = [
+  "build-bff",
+  "build-frontend"
+]
