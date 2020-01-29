@@ -10,6 +10,7 @@
   "dependencies": {
     "@material-ui/core": "^4.9.0",
     "@material-ui/icons": "^4.5.1",
+    "@material-ui/lab": "^4.0.0-alpha.40",
     "@material-ui/styles": "^4.9.0",
     "clsx": "^1.0.4",
     "graphql": "^14.5.8",
@@ -17,7 +18,8 @@
     "isomorphic-unfetch": "^3.0.0",
     "next": "^9.2.0",
     "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "react-dom": "^16.12.0",
+    "react-hook-form": "^4.7.1"
   },
   "devDependencies": {
     "@types/jest": "^24.9.0",
