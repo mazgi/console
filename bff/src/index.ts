@@ -1,5 +1,7 @@
 import { BaseEntity, createConnection } from 'typeorm'
 import Config from 'config'
+import cookieParser from 'cookie-parser'
+import { cookieTokenParser } from 'lib/aaa/cookieTokenParser'
 import cors from 'cors'
 import express from 'express'
 import { loadDBSeeds } from 'db/seeds'
@@ -25,6 +27,9 @@ const start = async (): Promise<void> => {
       credentials: !config.server.origins.includes('*')
     })
   )
+  // Parse cookie for authentication
+  app.use(cookieParser())
+  app.use(cookieTokenParser)
 
   // GraphQL & GraphiQL
   app.use('/graphql', async (req, res) => {

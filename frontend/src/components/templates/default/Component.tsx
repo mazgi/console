@@ -6,9 +6,12 @@ import {
   Toolbar,
   Typography
 } from '@material-ui/core'
+import React, { useEffect, useState } from 'react'
 import { Theme, makeStyles } from '@material-ui/core/styles'
-import React from 'react'
+import AccountCircle from './AccountCircle'
 import SideMenu from './SideMenu'
+import { fetchGraphQLData } from 'lib/graphql/request'
+import gql from 'graphql-tag'
 
 type Props = {
   title?: string
@@ -43,15 +46,40 @@ const useStyles = makeStyles((theme: Theme) => ({
 const Component: React.FC<Props> = (props: Props) => {
   const classes = useStyles('')
   const { title, acceptAnonymous, children } = props
+  const [user, setUser] = useState(null)
+  const query = gql`
+    {
+      authenticated {
+        id
+        email
+        displayName
+      }
+    }
+  `
+
+  useEffect(() => {
+    ;(async (): Promise<void> => {
+      // TODO: handle errors
+      try {
+        const user = await fetchGraphQLData(query, 'authenticated')
+        console.log(user)
+        setUser(user)
+      } catch (e) {
+        console.log(e)
+        setUser(null)
+      }
+    })()
+  }, [])
 
   return (
-    <div className={classes.root}>
+    <Container className={classes.root}>
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6" noWrap>
             {title}
           </Typography>
+          <AccountCircle user={user} />
         </Toolbar>
       </AppBar>
       <Drawer
@@ -61,16 +89,14 @@ const Component: React.FC<Props> = (props: Props) => {
           paper: classes.drawerPaper
         }}
       >
-        <div className={classes.appBarSpacer} />
+        <Container className={classes.appBarSpacer} />
         <SideMenu />
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container>
-          <div>{children}</div>
-        </Container>
+        {children}
       </main>
-    </div>
+    </Container>
   )
 }
 

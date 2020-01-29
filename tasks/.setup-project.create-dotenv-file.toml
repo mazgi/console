@@ -26,6 +26,6 @@ script_runner = "@duckscript"
 script = [
 '''
 !include_files ./tasks/.create-dotenv-file.ip_addrs.ds
-writefile .env "BIND_IP_ADDR=${bind_ip_addr}\nPUBLIC_IP_ADDR=${public_ip_addr}\nUID=${uid}GID=${gid}"
+writefile .env "BIND_IP_ADDR=${bind_ip_addr}\nPUBLIC_IP_ADDR=${public_ip_addr}"
 '''
 ]

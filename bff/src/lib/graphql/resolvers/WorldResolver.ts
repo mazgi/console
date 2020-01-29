@@ -13,7 +13,8 @@ class WorldResolver {
     @Arg('id', { nullable: true }) id?: string,
     @Arg('name', { nullable: true }) name?: string
   ): Promise<World> {
-    const w = await this.repository.findOne({ where: { name } })
+    const condition = id ? { id } : { name }
+    const w = await this.repository.findOne({ where: condition })
     if (!w) {
       throw new Error()
     }

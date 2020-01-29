@@ -33,7 +33,6 @@ async function getConfigFromS3(): Promise<{}> {
     })
     .promise()
   // TODO:
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const config = JSON.parse(response.Body!.toString())
   return config
 }

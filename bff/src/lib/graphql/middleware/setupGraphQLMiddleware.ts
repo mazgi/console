@@ -1,13 +1,19 @@
 import { IncomingMessage, ServerResponse } from 'http'
+import {
+  UserResolver,
+  UserSessionResolver,
+  WorldResolver
+} from 'lib/graphql/resolvers'
 import Config from 'config'
-import { WorldResolver } from 'lib/graphql/resolvers'
+import authChecker from 'lib/aaa/authChecker'
 import { buildSchema } from 'type-graphql'
 import graphqlHTTP from 'express-graphql'
 
 export const setupGraphQLMiddleware = async (): Promise<graphqlHTTP.Middleware> => {
   const config = await Config.getConfig()
   const schema = await buildSchema({
-    resolvers: [WorldResolver]
+    resolvers: [UserResolver, UserSessionResolver, WorldResolver],
+    authChecker: authChecker
   })
 
   return graphqlHTTP((request: IncomingMessage, response: ServerResponse) => {
