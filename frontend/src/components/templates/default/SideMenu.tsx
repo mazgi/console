@@ -20,6 +20,14 @@ const Component: React.FC = () => {
           <ListItemText primary="top" />
         </ListItem>
       </Link>
+      <Link href="/signin">
+        <ListItem button>
+          <ListItemIcon>
+            <icons.Link />
+          </ListItemIcon>
+          <ListItemText primary="signin" />
+        </ListItem>
+      </Link>
       <Divider />
       <ListSubheader inset>(dev)</ListSubheader>
       <Link href="/world">
@@ -28,6 +36,14 @@ const Component: React.FC = () => {
             <icons.Build />
           </ListItemIcon>
           <ListItemText primary="world" />
+        </ListItem>
+      </Link>
+      <Link href="/users">
+        <ListItem button>
+          <ListItemIcon>
+            <icons.Build />
+          </ListItemIcon>
+          <ListItemText primary="users" />
         </ListItem>
       </Link>
     </Fragment>
