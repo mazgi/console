@@ -1,10 +1,13 @@
 import { NextPage } from 'next'
-import { SignInForm } from 'components/organisms/authentication'
 import Template from 'components/templates/default'
 
+type CounterState = {
+  count: number
+}
+
 const Page: NextPage = () => (
-  <Template title="Sign in">
-    <SignInForm />
+  <Template title="Dev">
+    <div>dev</div>
   </Template>
 )
 

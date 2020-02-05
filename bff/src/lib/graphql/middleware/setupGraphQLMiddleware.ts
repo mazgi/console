@@ -1,5 +1,6 @@
 import { IncomingMessage, ServerResponse } from 'http'
 import {
+  ResourceResolver,
   UserResolver,
   UserSessionResolver,
   WorldResolver
@@ -12,7 +13,12 @@ import graphqlHTTP from 'express-graphql'
 export const setupGraphQLMiddleware = async (): Promise<graphqlHTTP.Middleware> => {
   const config = await Config.getConfig()
   const schema = await buildSchema({
-    resolvers: [UserResolver, UserSessionResolver, WorldResolver],
+    resolvers: [
+      ResourceResolver,
+      UserResolver,
+      UserSessionResolver,
+      WorldResolver
+    ],
     authChecker: authChecker
   })
 

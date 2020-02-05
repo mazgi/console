@@ -1,13 +1,12 @@
 import * as icons from '@material-ui/icons'
-import {
-  Divider,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  ListSubheader
-} from '@material-ui/core'
+import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 import React, { Fragment } from 'react'
 import Link from 'next/link'
+import SideMenuInDevelopment from './SideMenuInDevelopment'
+import getConfig from 'next/config'
+
+const { publicRuntimeConfig } = getConfig()
+const isDev = publicRuntimeConfig.isDev
 
 const Component: React.FC = () => {
   return (
@@ -20,32 +19,15 @@ const Component: React.FC = () => {
           <ListItemText primary="top" />
         </ListItem>
       </Link>
-      <Link href="/signin">
+      <Link href="/resource">
         <ListItem button>
           <ListItemIcon>
             <icons.Link />
           </ListItemIcon>
-          <ListItemText primary="signin" />
+          <ListItemText primary="resource" />
         </ListItem>
       </Link>
-      <Divider />
-      <ListSubheader inset>(dev)</ListSubheader>
-      <Link href="/world">
-        <ListItem button>
-          <ListItemIcon>
-            <icons.Build />
-          </ListItemIcon>
-          <ListItemText primary="world" />
-        </ListItem>
-      </Link>
-      <Link href="/users">
-        <ListItem button>
-          <ListItemIcon>
-            <icons.Build />
-          </ListItemIcon>
-          <ListItemText primary="users" />
-        </ListItem>
-      </Link>
+      {isDev && <SideMenuInDevelopment />}
     </Fragment>
   )
 }

@@ -1,4 +1,4 @@
-import { Arg, Query, Resolver } from 'type-graphql'
+import { Arg, Authorized, Query, Resolver } from 'type-graphql'
 import World from 'entities/World'
 import { getRepository } from 'typeorm'
 
@@ -7,6 +7,7 @@ import { getRepository } from 'typeorm'
 class WorldResolver {
   repository = getRepository(World)
 
+  @Authorized()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @Query(returns => World)
   async world(
@@ -21,6 +22,7 @@ class WorldResolver {
     return w as World
   }
 
+  @Authorized()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @Query(returns => [World])
   async worlds(): Promise<World[]> {

@@ -3,12 +3,15 @@
 
 // import NextApp, { AppInitialProps } from 'next/app'
 import React from 'react'
+import { notificationState } from 'components/templates/default'
 
 const App = ({ Component, pageProps }) => {
   return (
-    <React.Fragment>
-      <Component {...pageProps}></Component>
-    </React.Fragment>
+    <notificationState.Provider>
+      <React.Fragment>
+        <Component {...pageProps}></Component>
+      </React.Fragment>
+    </notificationState.Provider>
   )
 }
 

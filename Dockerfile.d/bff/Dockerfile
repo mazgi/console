@@ -5,7 +5,11 @@ FROM node:12-alpine as base
 FROM base as builder
 COPY rootfs /
 WORKDIR /workspace
-RUN npm install\
+
+# See https://github.com/kelektiv/node.bcrypt.js/issues/615#issuecomment-407300081
+RUN apk add --no-cache --virtual deps python build-base\
+  && npm install\
+  && apk del deps\
   && npm run test\
   && npm run build
 # End builder stage
