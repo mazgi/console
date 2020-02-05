@@ -1,4 +1,4 @@
-name: "Build production images"
+name: build-production-images
 
 on:
   push:

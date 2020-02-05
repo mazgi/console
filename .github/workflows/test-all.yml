@@ -1,4 +1,4 @@
-name: "Test all services"
+name: test-all-services
 
 on:
   push:
