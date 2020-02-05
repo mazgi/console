@@ -1,5 +1,7 @@
 # console
 
+![GitHub Actions status for "test-all-services"](https://github.com/mazgi/console/workflows/test-all-services/badge.svg)
+
 ## How to run
 
 ### Download cargo-make

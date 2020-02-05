@@ -6,7 +6,7 @@
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "lint": "eslint \"src/**\"",
     "test": "jest",
-    "coverage": "jest --coverage",
+    "test:coverage": "jest --coverage",
     "build": "webpack",
     "build:debug": "webpack --mode development",
     "start": "node dist/main.js",
