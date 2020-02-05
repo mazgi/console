@@ -2,8 +2,8 @@ name: build-production-images
 
 on:
   push:
-    # branches:
-    #   - master
+    branches:
+      - master
     tags:
       - v*
 
