@@ -1,0 +1,45 @@
+name: "Build production images"
+
+on:
+  push:
+    # branches:
+    #   - master
+    tags:
+      - v*
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    env:
+      CARGO_MAKE_VERSION: 0.26.1
+    steps:
+      - name: Download cargo-make
+        run: |
+          curl -o /tmp/cargo-make.zip -sL https://github.com/sagiegurari/cargo-make/releases/download/${CARGO_MAKE_VERSION}/cargo-make-v${CARGO_MAKE_VERSION}-x86_64-unknown-linux-musl.zip
+          unzip /tmp/cargo-make.zip cargo-make-v${CARGO_MAKE_VERSION}-x86_64-unknown-linux-musl/cargo-make -d /tmp/
+          mv /tmp/cargo-make-v${CARGO_MAKE_VERSION}-x86_64-unknown-linux-musl/cargo-make /tmp/
+      - name: Save downloaded binary as an artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: cargo-make-bin
+          path: /tmp/cargo-make
+  build:
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [bff, frontend]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get cargo-make binary
+        uses: actions/download-artifact@v1
+        with:
+          name: cargo-make-bin
+          path: bin/
+      # See:
+      #   - https://github.com/actions/upload-artifact/issues/38
+      #   - https://github.com/actions/download-artifact/issues/14
+      - name: Restore the permissions
+        run: chmod +x bin/cargo-make
+      - name: make
+        run: bin/cargo-make make --makefile tasks/build-production-images.toml ${{ matrix.service }}
