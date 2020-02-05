@@ -1,5 +1,6 @@
 import { generateToken, verifyToken } from 'lib/jwt'
 import { AuthChecker } from 'type-graphql'
+import { AuthenticationError } from './AuthenticationError'
 import Config from 'config'
 import { Context } from './Context'
 import User from 'entities/User'
@@ -18,6 +19,11 @@ const authChecker: AuthChecker<Context, RoleDefinition> = async (
   const config = await Config.getConfig()
   const repository = getRepository(User)
   let token = context.request.cookies.token
+  if (!token) {
+    const e = new AuthenticationError('The token is null.')
+    console.log(e)
+    throw e
+  }
   config.isDevelopment && console.log(`roles: `, roles, `, token: `, token)
   if (config.isDevelopment && !token) {
     const user = await repository.findOneOrFail()
@@ -29,7 +35,9 @@ const authChecker: AuthChecker<Context, RoleDefinition> = async (
   }
   const [verified, payload] = await verifyToken(token)
   if (!verified) {
-    // TODO:
+    const e = new AuthenticationError('The token cannot be verified.')
+    console.log(e)
+    return false
   }
   const user = await repository.findOneOrFail({
     where: { id: payload.id }

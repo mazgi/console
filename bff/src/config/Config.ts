@@ -32,9 +32,11 @@ class Config {
       defaultConfig = { ...defaultConfig, ...devConfig }
     }
 
-    const configFromURI = await getConfigFromURI()
-    const configFromS3 = await getConfigFromS3()
-    const configFromGCS = await getConfigFromGCS()
+    const [configFromURI, configFromS3, configFromGCS] = await Promise.all([
+      getConfigFromURI,
+      getConfigFromS3,
+      getConfigFromGCS
+    ])
 
     const configMerged = {
       isDevelopment,

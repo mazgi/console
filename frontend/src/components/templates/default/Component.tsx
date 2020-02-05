@@ -9,6 +9,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import { Theme, makeStyles } from '@material-ui/core/styles'
 import AccountCircle from './AccountCircle'
+import NotificationViewer from './NotificationViewer'
 import SideMenu from './SideMenu'
 import { fetchGraphQLData } from 'lib/graphql/request'
 import gql from 'graphql-tag'
@@ -26,6 +27,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1
+  },
+  title: {
+    flexGrow: 1
   },
   drawer: {
     width: drawerWidth,
@@ -76,7 +80,7 @@ const Component: React.FC<Props> = (props: Props) => {
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
-          <Typography variant="h6" noWrap>
+          <Typography variant="h6" noWrap className={classes.title}>
             {title}
           </Typography>
           <AccountCircle user={user} />
@@ -94,6 +98,7 @@ const Component: React.FC<Props> = (props: Props) => {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
+        <NotificationViewer />
         {children}
       </main>
     </Container>

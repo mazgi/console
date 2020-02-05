@@ -19,6 +19,7 @@ class UserSessionResolver {
   repository = getRepository(User)
 
   @Authorized()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @Query(returns => User)
   async authenticated(@Ctx() context: Context): Promise<User> {
     const id = context.user.id
@@ -30,6 +31,7 @@ class UserSessionResolver {
   }
 
   @UseMiddleware(SignInResultMiddleware)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @Mutation(returns => User, { nullable: true })
   async signIn(
     @Arg('email') email: string,

@@ -27,7 +27,16 @@ export const verifyToken = async (
     return [false, { id: null }]
   }
   const config = await Config.getConfig()
-  const decoded = jwt.verify(token, config.publicKey)
+  let decoded = null
+  try {
+    decoded = jwt.verify(token, config.publicKey)
+  } catch (e) {
+    console.log(e)
+  }
+  if (!decoded) {
+    console.log(`The token could not be verified.`)
+    return [false, { id: null }]
+  }
   const payload = decoded as TokenPayload
   console.log(`The token verified: `, payload)
   return [!!payload, payload]

@@ -2,6 +2,7 @@ import * as icons from '@material-ui/icons'
 import { Avatar, Tooltip } from '@material-ui/core'
 import React, { Fragment } from 'react'
 import AvatarGroup from '@material-ui/lab/AvatarGroup'
+import Link from 'next/link'
 import { User } from './User'
 
 type Props = {
@@ -22,7 +23,14 @@ const Component: React.FC<Props> = (props: Props) => {
             />
           </Tooltip>
         </AvatarGroup>
-      )) || <p>Please sign-in</p>}
+      )) || (
+        <p>
+          Please&nbsp;
+          <Link href="/signin">
+            <a>sign-in</a>
+          </Link>
+        </p>
+      )}
     </Fragment>
   )
 }
