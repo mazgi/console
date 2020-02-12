@@ -3,10 +3,14 @@ import { useState } from 'react'
 import util from 'util'
 
 const useNotificationState = (): {
-  message: () => string
+  message: () => string | null
   send: (string) => void
+  reset: () => void
 } => {
   const [message, setMessage] = useState(null)
+  const reset = (): void => {
+    setMessage(null)
+  }
   const send = (msgObj?: string | Error | object): void => {
     if (!msgObj) {
       return
@@ -22,7 +26,7 @@ const useNotificationState = (): {
     }
     setMessage(msg)
   }
-  return { message, send }
+  return { message, send, reset }
 }
 
 export const notificationState = createContainer(useNotificationState)
