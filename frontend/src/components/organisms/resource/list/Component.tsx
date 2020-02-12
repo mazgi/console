@@ -1,4 +1,5 @@
 import {
+  CircularProgress,
   Paper,
   Table,
   TableBody,
@@ -15,6 +16,8 @@ type Resource = {
   name: string
 }
 type Props = {
+  title?: string
+  loading?: boolean
   resources?: Array<Resource>
 }
 
@@ -27,11 +30,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const Component: React.FC<Props> = (props: Props) => {
   const classes = useStyles('')
-  const { resources } = props
+  const { title, loading, resources } = props
 
   return (
     <Paper>
-      <Typography variant="h6">Your Resources</Typography>
+      <Typography variant="h6">{title}</Typography>
       <Table>
         <TableHead>
           <TableRow>
@@ -39,11 +42,15 @@ const Component: React.FC<Props> = (props: Props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {resources.map(resource => (
-            <TableRow key={resource.id}>
-              <TableCell>{resource.name}</TableCell>
-            </TableRow>
-          ))}
+          {loading ? (
+            <CircularProgress />
+          ) : (
+            resources.map(resource => (
+              <TableRow key={resource.id}>
+                <TableCell>{resource.name}</TableCell>
+              </TableRow>
+            ))
+          )}
         </TableBody>
       </Table>
     </Paper>
@@ -51,6 +58,7 @@ const Component: React.FC<Props> = (props: Props) => {
 }
 
 Component.defaultProps = {
+  title: 'Resources',
   resources: []
 }
 
