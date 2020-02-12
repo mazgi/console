@@ -16,15 +16,15 @@ const Component: React.FC = () => {
           <ListItemIcon>
             <icons.Link />
           </ListItemIcon>
-          <ListItemText primary="top" />
+          <ListItemText primary="/" />
         </ListItem>
       </Link>
-      <Link href="/resource">
+      <Link href="/resources">
         <ListItem button>
           <ListItemIcon>
             <icons.Link />
           </ListItemIcon>
-          <ListItemText primary="resource" />
+          <ListItemText primary="resources" />
         </ListItem>
       </Link>
       {isDev && <SideMenuInDevelopment />}
