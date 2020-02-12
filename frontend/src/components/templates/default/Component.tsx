@@ -1,23 +1,23 @@
 import {
   AppBar,
+  CircularProgress,
   Container,
   CssBaseline,
   Drawer,
   Toolbar,
   Typography
 } from '@material-ui/core'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Theme, makeStyles } from '@material-ui/core/styles'
 import AccountCircle from './AccountCircle'
-import NotificationViewer from './NotificationViewer'
 import SideMenu from './SideMenu'
-import { fetchGraphQLData } from 'lib/graphql/request'
-import gql from 'graphql-tag'
 
 type Props = {
   title?: string
   acceptAnonymous?: boolean
   children?: React.ReactNode
+  error?: Error
+  loading?: boolean
 }
 
 const drawerWidth = 160
@@ -44,36 +44,15 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   appBarSpacer: {
     ...theme.mixins.toolbar
+  },
+  errorMessage: {
+    color: '#f00'
   }
 }))
 
 const Component: React.FC<Props> = (props: Props) => {
   const classes = useStyles('')
-  const { title, acceptAnonymous, children } = props
-  const [user, setUser] = useState(null)
-  const query = gql`
-    {
-      authenticated {
-        id
-        email
-        displayName
-      }
-    }
-  `
-
-  useEffect(() => {
-    ;(async (): Promise<void> => {
-      // TODO: handle errors
-      try {
-        const user = await fetchGraphQLData(query, 'authenticated')
-        console.log(user)
-        setUser(user)
-      } catch (e) {
-        console.log(e)
-        setUser(null)
-      }
-    })()
-  }, [])
+  const { title, acceptAnonymous, children, error, loading } = props
 
   return (
     <Container className={classes.root}>
@@ -83,7 +62,8 @@ const Component: React.FC<Props> = (props: Props) => {
           <Typography variant="h6" noWrap className={classes.title}>
             {title}
           </Typography>
-          <AccountCircle user={user} />
+          {loading && <CircularProgress color="secondary" />}
+          <AccountCircle />
         </Toolbar>
       </AppBar>
       <Drawer
@@ -98,7 +78,9 @@ const Component: React.FC<Props> = (props: Props) => {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <NotificationViewer />
+        <Typography noWrap className={classes.errorMessage}>
+          {error ? error.message : '(no error)'}
+        </Typography>
         {children}
       </main>
     </Container>
