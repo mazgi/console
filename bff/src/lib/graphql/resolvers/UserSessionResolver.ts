@@ -10,7 +10,7 @@ import {
 import { CannotSignInError } from './CannotSignInError'
 import Config from 'config'
 import { Context } from 'lib/aaa/Context'
-import SignInResultMiddleware from 'lib/aaa/SignInResultMiddleware'
+import { SignInResultMiddleware } from 'lib/graphql/middleware'
 import User from 'entities/User'
 import { getRepository } from 'typeorm'
 

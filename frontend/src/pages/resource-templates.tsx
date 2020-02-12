@@ -1,10 +1,9 @@
-import { Grid } from '@material-ui/core'
 import { NextPage } from 'next'
-import ResourceList from 'components/organisms/resource/list'
 import Template from 'components/templates/default'
 import { fetchGraphQLData } from 'lib/graphql/request'
 import gql from 'graphql-tag'
 import { notificationState } from 'components/templates/default/NotificationStateContainer'
+import { useEffect } from 'react'
 
 type World = {
   id: string
@@ -17,17 +16,21 @@ type Props = {
 
 const Page: NextPage<Props> = (props: Props) => {
   const { worlds, error } = props
-  const resources = worlds
   const notification = notificationState.useContainer()
-  notification.send(error)
+
+  useEffect(() => {
+    notification.send(error)
+  }, [])
 
   return (
-    <Template title="dashboard">
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <ResourceList resources={resources} />
-        </Grid>
-      </Grid>
+    <Template title="Resource templates">
+      <main>
+        {worlds.map(world => (
+          <p key={world.id}>
+            {world.id}: {world.name}
+          </p>
+        ))}
+      </main>
     </Template>
   )
 }

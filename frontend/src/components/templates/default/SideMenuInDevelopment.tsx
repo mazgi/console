@@ -30,12 +30,20 @@ const Component: React.FC = () => {
           <ListItemText primary="signin" />
         </ListItem>
       </Link>
-      <Link href="/world">
+      <Link href="/resource-templates">
+        <ListItem button>
+          <ListItemIcon>
+            <icons.Link />
+          </ListItemIcon>
+          <ListItemText primary="resource templates" />
+        </ListItem>
+      </Link>
+      <Link href="/worlds">
         <ListItem button>
           <ListItemIcon>
             <icons.Build />
           </ListItemIcon>
-          <ListItemText primary="world" />
+          <ListItemText primary="worlds" />
         </ListItem>
       </Link>
       <Link href="/users">

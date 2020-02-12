@@ -4,10 +4,10 @@ import {
   NextFn,
   ResolverData
 } from 'type-graphql'
-import { Context } from './Context'
+import { Context } from 'lib/aaa/Context'
 import User from 'entities/User'
 import { generateToken } from 'lib/jwt'
-import { saveTokenToResponseCookie } from './saveTokenToResponseCookie'
+import { saveTokenToResponseCookie } from 'lib/aaa/saveTokenToResponseCookie'
 
 // https://typegraphql.ml/docs/middlewares.html#class-based-middleware
 export class SignInResultMiddleware implements MiddlewareInterface<Context> {

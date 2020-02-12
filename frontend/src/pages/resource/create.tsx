@@ -2,7 +2,6 @@ import { NextPage } from 'next'
 import Template from 'components/templates/default'
 import { fetchGraphQLData } from 'lib/graphql/request'
 import gql from 'graphql-tag'
-import { notificationState } from 'components/templates/default/NotificationStateContainer'
 
 type World = {
   id: string
@@ -10,16 +9,11 @@ type World = {
 }
 type Props = {
   worlds: World[]
-  error?: Error
 }
 
-const Page: NextPage<Props> = (props: Props) => {
-  const { worlds, error } = props
-  const notification = notificationState.useContainer()
-  notification.send(error)
-
+const Page: NextPage<Props> = ({ worlds }: Props) => {
   return (
-    <Template title="world">
+    <Template title="Create resource">
       <main>
         {worlds.map(world => (
           <p key={world.id}>
@@ -32,10 +26,6 @@ const Page: NextPage<Props> = (props: Props) => {
 }
 
 Page.getInitialProps = async (): Promise<Props> => {
-  const props: Props = {
-    worlds: [],
-    error: null
-  }
   const query = gql`
     query {
       worlds {
@@ -44,14 +34,9 @@ Page.getInitialProps = async (): Promise<Props> => {
       }
     }
   `
-  await fetchGraphQLData(query, 'worlds')
-    .then(worlds => {
-      props.worlds = worlds as World[]
-    })
-    .catch(reason => {
-      props.error = reason
-    })
-  return props
+  const result = await fetchGraphQLData(query, 'worlds')
+  const worlds = result as World[]
+  return { worlds }
 }
 
 export default Page

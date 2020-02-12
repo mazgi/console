@@ -3,27 +3,35 @@ import { Avatar, Tooltip } from '@material-ui/core'
 import React, { Fragment } from 'react'
 import AvatarGroup from '@material-ui/lab/AvatarGroup'
 import Link from 'next/link'
-import { User } from './User'
+import gql from 'graphql-tag'
+import { useQuery } from '@apollo/react-hooks'
 
-type Props = {
-  user?: User
-}
-
-const Component: React.FC<Props> = (props: Props) => {
-  const { user } = props
+const Component: React.FC = () => {
+  const query = gql`
+    {
+      authenticated {
+        id
+        email
+        displayName
+      }
+    }
+  `
+  const { client, data, error, loading, networkStatus, called } = useQuery(
+    query
+  )
 
   return (
     <Fragment>
-      {(user && user.id && (
+      {data ? (
         <AvatarGroup>
-          <Tooltip title={user.displayName}>
+          <Tooltip title={data.authenticated.displayName}>
             <Avatar
-              alt={user.displayName}
+              alt={data.authenticated.displayName}
               src="/static/images/avatar/image.jpg"
             />
           </Tooltip>
         </AvatarGroup>
-      )) || (
+      ) : (
         <p>
           Please&nbsp;
           <Link href="/signin">
