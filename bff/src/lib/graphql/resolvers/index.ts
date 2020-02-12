@@ -1,4 +1,6 @@
+export { default as DashboardResolver } from './DashboardResolver'
 export { default as ResourceResolver } from './ResourceResolver'
+export { default as ResourceTemplateResolver } from './ResourceTemplateResolver'
 export { default as UserResolver } from './UserResolver'
 export { default as UserSessionResolver } from './UserSessionResolver'
 export { default as WorldResolver } from './WorldResolver'
