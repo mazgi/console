@@ -1,16 +1,21 @@
 // Next.js Custom App
 // See https://nextjs.org/docs/advanced-features/custom-app
 
+import { ApolloProvider } from '@apollo/react-hooks'
 // import NextApp, { AppInitialProps } from 'next/app'
 import React from 'react'
+import { getClient } from 'lib/graphql/request'
 import { notificationState } from 'components/templates/default'
 
 const App = ({ Component, pageProps }) => {
+  const client = getClient()
   return (
     <notificationState.Provider>
-      <React.Fragment>
-        <Component {...pageProps}></Component>
-      </React.Fragment>
+      <ApolloProvider client={client}>
+        <React.Fragment>
+          <Component {...pageProps}></Component>
+        </React.Fragment>
+      </ApolloProvider>
     </notificationState.Provider>
   )
 }
