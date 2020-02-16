@@ -8,7 +8,8 @@ ARG UID=0
 ENV GID=${GID:-0}
 ENV UID=${UID:-0}
 
-RUN apt-get update\
+RUN echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends\
+  && apt-get update\
   && apt-get install --assume-yes --no-install-recommends locales procps dialog\
   && echo 'en_US.UTF-8 UTF-8' > /etc/locale.gen\
   && locale-gen\
