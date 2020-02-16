@@ -10,7 +10,8 @@
     "build": "webpack",
     "build:debug": "webpack --mode development",
     "start": "node dist/main.js",
-    "tsc": "tsc"
+    "ts-node": "ts-node",
+    "ulid": "ulid"
   },
   "dependencies": {
     "@google-cloud/compute": "^1.2.0",
@@ -28,7 +29,8 @@
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.1.0",
     "type-graphql": "^0.17.6",
-    "typeorm": "^0.2.22"
+    "typeorm": "^0.2.22",
+    "ulid": "^2.3.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",

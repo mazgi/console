@@ -16,5 +16,8 @@ class Resource {
   @Field({ nullable: true })
   @Column({ type: 'text', nullable: true })
   description?: string
+
+  @Column({ type: 'json', nullable: true })
+  data?: string
 }
 export default Resource
