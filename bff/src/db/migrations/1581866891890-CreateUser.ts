@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
 
-export class CreateUser1580296463597 implements MigrationInterface {
-  name = 'CreateUser1580296463597'
+export class CreateUser1581866891890 implements MigrationInterface {
+  name = 'CreateUser1581866891890'
 
   public async up(queryRunner: QueryRunner): Promise<any> {
     await queryRunner.query(
-      'CREATE TABLE `user` (`id` varchar(36) NOT NULL, `name` varchar(255) NOT NULL, `email` varchar(255) NOT NULL, `displayName` varchar(255) NOT NULL, `hashedPassword` varchar(255) NULL, UNIQUE INDEX `IDX_065d4d8f3b5adb4a08841eae3c` (`name`), UNIQUE INDEX `IDX_e12875dfb3b1d92d7d7c5377e2` (`email`), UNIQUE INDEX `IDX_059e69c318702e93998f26d152` (`displayName`), PRIMARY KEY (`id`)) ENGINE=InnoDB',
+      'CREATE TABLE `user` (`id` varchar(36) NOT NULL, `name` varchar(255) NOT NULL, `email` varchar(255) NOT NULL, `displayName` varchar(255) NOT NULL, `hashedPassword` varchar(255) NULL, `serializedMetadata` json NOT NULL, UNIQUE INDEX `IDX_065d4d8f3b5adb4a08841eae3c` (`name`), UNIQUE INDEX `IDX_e12875dfb3b1d92d7d7c5377e2` (`email`), UNIQUE INDEX `IDX_059e69c318702e93998f26d152` (`displayName`), PRIMARY KEY (`id`)) ENGINE=InnoDB',
       undefined
     )
   }

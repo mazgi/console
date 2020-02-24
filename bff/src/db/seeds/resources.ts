@@ -9,6 +9,7 @@ export const loadResources = async (): Promise<void> => {
     return
   }
 
+  console.log('load seeds for %s', repository.metadata.tableName)
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const seeds = require('./resources.seed.json')
   const resources = plainToClass(Resource, seeds)

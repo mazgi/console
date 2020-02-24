@@ -9,9 +9,12 @@ export const loadWorlds = async (): Promise<void> => {
     return
   }
 
+  console.log('load seeds for %s', repository.metadata.tableName)
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const seeds = require('./worlds.seed.json')
   const worlds = plainToClass(World, seeds)
-  await repository.save(worlds)
+  await repository.save(worlds).catch(reason => {
+    console.log('cannot load seed: ', reason)
+  })
   console.log('loaded worlds: %s', await repository.find())
 }

@@ -1,76 +1,78 @@
 import { Arg, Authorized, Mutation, Query, Resolver } from 'type-graphql'
-import Resource from 'entities/Resource'
-import { ResourceNotFoundError } from './ResourceNotFoundError'
+import ResourceTemplate from 'entities/ResourceTemplate'
+import { ResourceTemplateNotFoundError } from './ResourceTemplateNotFoundError'
 import { getRepository } from 'typeorm'
-
-// TODO: replace the model
 
 @Resolver()
 class ResourceTemplateResolver {
-  repository = getRepository(Resource)
+  repository = getRepository(ResourceTemplate)
 
   @Authorized()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @Mutation(returns => Resource)
+  @Mutation(returns => ResourceTemplate)
   async createResourceTemplate(
     @Arg('name') name: string,
     @Arg('description', { nullable: true }) description?: string
-  ): Promise<Resource> {
-    const resource = new Resource()
-    resource.name = name
-    resource.description = description
-    await this.repository.save(resource)
-    return resource
+  ): Promise<ResourceTemplate> {
+    const resourceTemplate = new ResourceTemplate()
+    resourceTemplate.name = name
+    resourceTemplate.description = description
+    await this.repository.save(resourceTemplate)
+    return resourceTemplate
   }
 
   @Authorized()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @Query(returns => Resource)
-  async resourceTemplate(@Arg('id') id: string): Promise<Resource> {
-    const resource = await this.repository
+  @Query(returns => ResourceTemplate)
+  async resourceTemplate(@Arg('id') id: string): Promise<ResourceTemplate> {
+    const resourceTemplate = await this.repository
       .findOneOrFail({ where: { id } })
       .catch(reason => {
-        const e = new ResourceNotFoundError(reason)
+        const e = new ResourceTemplateNotFoundError(reason)
         console.log(e)
         throw e
       })
-    return resource
+    return resourceTemplate
   }
 
   // @Authorized()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @Query(returns => [Resource])
-  async resourceTemplates(): Promise<Resource[]> {
-    const resources = await this.repository.find()
-    return resources
+  @Query(returns => [ResourceTemplate])
+  async resourceTemplates(): Promise<ResourceTemplate[]> {
+    const resourceTemplates = await this.repository.find()
+    return resourceTemplates
   }
 
   @Authorized()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @Mutation(returns => Resource)
+  @Mutation(returns => ResourceTemplate)
   async updateResourceTemplate(
     @Arg('id') id: string,
     @Arg('name', { nullable: true }) name?: string,
     @Arg('description', { nullable: true }) description?: string,
     @Arg('deleteDescription', { defaultValue: false })
     deleteDescription?: boolean
-  ): Promise<Resource> {
-    const resource = await this.repository.findOneOrFail({ where: { id } })
-    resource.name = name || resource.name
-    resource.description = description || resource.description
+  ): Promise<ResourceTemplate> {
+    const resourceTemplate = await this.repository.findOneOrFail({
+      where: { id }
+    })
+    resourceTemplate.name = name || resourceTemplate.name
+    resourceTemplate.description = description || resourceTemplate.description
     if (deleteDescription) {
-      resource.description = undefined
+      resourceTemplate.description = undefined
     }
-    await this.repository.save(resource)
-    return resource
+    await this.repository.save(resourceTemplate)
+    return resourceTemplate
   }
 
   @Authorized()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @Mutation(returns => Boolean)
   async deleteResourceTemplate(@Arg('id') id: string): Promise<boolean> {
-    const resource = await this.repository.findOneOrFail({ where: { id } })
-    await this.repository.remove(resource)
+    const resourceTemplate = await this.repository.findOneOrFail({
+      where: { id }
+    })
+    await this.repository.remove(resourceTemplate)
     return true
   }
 }

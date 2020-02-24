@@ -7,6 +7,10 @@ export type ConfigType = {
   privateKey: string
   publicKey: string
   db: ConnectionOptions
+  redis: {
+    host: string
+    port: number
+  }
   server: {
     port: number
     origins: string[]

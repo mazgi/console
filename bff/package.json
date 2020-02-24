@@ -10,13 +10,15 @@
     "build": "webpack",
     "build:debug": "webpack --mode development",
     "start": "node dist/main.js",
-    "tsc": "tsc"
+    "ts-node": "ts-node",
+    "ulid": "ulid"
   },
   "dependencies": {
     "@google-cloud/compute": "^1.2.0",
     "@google-cloud/storage": "^4.3.0",
     "aws-sdk": "^2.610.0",
     "bcrypt": "^3.0.7",
+    "bullmq": "^1.6.7",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.11.0",
     "cookie-parser": "^1.4.4",
@@ -28,7 +30,8 @@
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.1.0",
     "type-graphql": "^0.17.6",
-    "typeorm": "^0.2.22"
+    "typeorm": "^0.2.22",
+    "ulid": "^2.3.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",

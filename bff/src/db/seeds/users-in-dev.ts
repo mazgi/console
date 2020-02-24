@@ -25,6 +25,7 @@ export const loadUsersInDev = async (): Promise<void> => {
     return user
   })
 
+  console.log('load seeds for %s', repository.metadata.tableName)
   await repository.save(users)
   // write out users information for developing
   fs.writeFileSync('users.dev.json', JSON.stringify(users, null, 2))

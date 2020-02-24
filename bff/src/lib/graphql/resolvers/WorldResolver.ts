@@ -22,7 +22,7 @@ class WorldResolver {
     return w as World
   }
 
-  @Authorized()
+  // @Authorized()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @Query(returns => [World])
   async worlds(): Promise<World[]> {

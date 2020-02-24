@@ -3,35 +3,37 @@ import { Field, ID, ObjectType } from 'type-graphql'
 import { IsJSON, IsNotEmpty, validateOrReject } from 'class-validator'
 
 @ObjectType()
-class WorldMetadata {
+class ResourceTemplateMetadata {
   @Field()
   version!: string
 }
 
-const defaultMetadata: WorldMetadata = {
+const defaultMetadata: ResourceTemplateMetadata = {
   version: '2020.02.0'
 }
 
 @ObjectType()
 @Entity()
-class World {
+class ResourceTemplate {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @Field(type => ID)
   @PrimaryGeneratedColumn('uuid')
   id!: string
 
   @Field()
-  @Column({
-    unique: true
-  })
+  @Column()
   @IsNotEmpty()
   name!: string
+
+  @Field({ nullable: true })
+  @Column({ type: 'text', nullable: true })
+  description?: string
 
   @Column({ type: 'json' })
   @IsJSON()
   serializedMetadata!: string
   @Field()
-  metadata!: WorldMetadata
+  metadata!: ResourceTemplateMetadata
 
   validate: () => Promise<void> = async () => {
     await validateOrReject(this)
@@ -53,4 +55,4 @@ class World {
     this.serializedMetadata = JSON.stringify(metadata)
   }
 }
-export default World
+export default ResourceTemplate

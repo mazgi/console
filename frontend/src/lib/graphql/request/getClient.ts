@@ -17,7 +17,6 @@ export const getClient = (): ApolloClient<NormalizedCacheObject> => {
     cache,
     link
   })
-  // TODO: ssr
   if (process.browser) {
     return client
   } else {

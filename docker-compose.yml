@@ -31,6 +31,10 @@ services:
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
+  redis:
+    image: redis:5
+    ports:
+      - "${BIND_IP_ADDR:-127.0.0.1}:6379:6379"
   bff:
     build:
       context: Dockerfile.d/bff.development
@@ -39,6 +43,7 @@ services:
         GID: ${GID:-0}
     depends_on:
       - mysql
+      - redis
     working_dir: /workspace
     volumes:
       - ./bff:/workspace

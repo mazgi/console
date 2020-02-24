@@ -1,22 +1,36 @@
 import { Arg, Authorized, Mutation, Query, Resolver } from 'type-graphql'
-import Resource from 'entities/Resource'
+import { Resource, ResourceMetadata, defaultResourceMetadata } from 'entities'
 import { ResourceNotFoundError } from './ResourceNotFoundError'
 import { getRepository } from 'typeorm'
+import { ulid } from 'ulid'
 
 @Resolver()
 class ResourceResolver {
   repository = getRepository(Resource)
 
-  @Authorized()
+  // @Authorized()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @Mutation(returns => Resource)
   async createResource(
     @Arg('name') name: string,
     @Arg('description', { nullable: true }) description?: string
   ): Promise<Resource> {
+    console.log('‼️ createResource: ', name)
     const resource = new Resource()
+    resource.id = ulid()
     resource.name = name
     resource.description = description
+    // TODO: metadata
+    const metadata: ResourceMetadata = {
+      ...defaultResourceMetadata,
+      // TODO: set enable/disable by permissions
+      controls: {
+        startable: true,
+        stoppable: true,
+        deletable: true
+      }
+    }
+    resource.metadata = metadata
     await this.repository.save(resource)
     return resource
   }
@@ -35,7 +49,7 @@ class ResourceResolver {
     return resource
   }
 
-  @Authorized()
+  // @Authorized()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @Query(returns => [Resource])
   async resources(): Promise<Resource[]> {
