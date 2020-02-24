@@ -1,42 +1,17 @@
+import { GoogleComputeEngineCreateForm } from 'components/organisms/resource/GoogleComputeEngine/create'
 import { NextPage } from 'next'
 import Template from 'components/templates/default'
-import { fetchGraphQLData } from 'lib/graphql/request'
-import gql from 'graphql-tag'
+import { useRouter } from 'next/router'
 
-type World = {
-  id: string
-  name: string
-}
-type Props = {
-  worlds: World[]
-}
+const Page: NextPage = () => {
+  const router = useRouter()
+  const { type, region } = router.query
 
-const Page: NextPage<Props> = ({ worlds }: Props) => {
   return (
-    <Template title="Create resource">
-      <main>
-        {worlds.map(world => (
-          <p key={world.id}>
-            {world.id}: {world.name}
-          </p>
-        ))}
-      </main>
+    <Template title="Create a resource">
+      <GoogleComputeEngineCreateForm region={region.toString()} />
     </Template>
   )
-}
-
-Page.getInitialProps = async (): Promise<Props> => {
-  const query = gql`
-    query {
-      worlds {
-        id
-        name
-      }
-    }
-  `
-  const result = await fetchGraphQLData(query, 'worlds')
-  const worlds = result as World[]
-  return { worlds }
 }
 
 export default Page
