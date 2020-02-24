@@ -22,6 +22,10 @@
     },
     "logging": true
   },
+  "redis": {
+    "host": "redis",
+    "port": 6789
+  },
   "email": {
     "type": "gmail",
     "address": "system@example.com",
