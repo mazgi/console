@@ -1,19 +1,24 @@
 import * as bcrypt from 'bcrypt'
-import { Authorized, Field, ID, ObjectType } from 'type-graphql'
-import {
-  BeforeInsert,
-  BeforeUpdate,
-  Column,
-  Entity,
-  PrimaryGeneratedColumn
-} from 'typeorm'
-import { IsEmail, validate } from 'class-validator'
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Field, ID, ObjectType } from 'type-graphql'
+import { IsEmail, IsJSON, IsNotEmpty, validateOrReject } from 'class-validator'
 import ValidationError from 'lib/validator/ValidationError'
 import validatePassword from 'lib/validator/validatePassword'
 
 @ObjectType()
+class UserMetadata {
+  @Field()
+  version!: string
+}
+
+const defaultMetadata: UserMetadata = {
+  version: '2020.02.0'
+}
+
+@ObjectType()
 @Entity()
 class User {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @Field(type => ID)
   @PrimaryGeneratedColumn('uuid')
   id!: string
@@ -22,6 +27,7 @@ class User {
   @Column({
     unique: true
   })
+  @IsNotEmpty()
   name!: string
 
   @Field()
@@ -35,6 +41,7 @@ class User {
   @Column({
     unique: true
   })
+  @IsNotEmpty()
   displayName!: string
 
   @Column({
@@ -44,14 +51,36 @@ class User {
   // volatile field
   password?: string
 
-  @BeforeInsert()
-  @BeforeUpdate()
+  @Column({ type: 'json' })
+  @IsJSON()
+  serializedMetadata!: string
+  @Field()
+  metadata!: UserMetadata
+
+  validate: () => Promise<void> = async () => {
+    await validateOrReject(this)
+  }
+
+  deserializeMetadata: () => Promise<void> = async () => {
+    const metadata = {
+      ...defaultMetadata,
+      ...this.deserializeMetadata
+    }
+    this.metadata = metadata
+  }
+
+  serializeMetadata: () => Promise<void> = async () => {
+    const metadata = {
+      ...defaultMetadata,
+      ...this.metadata
+    }
+    this.serializedMetadata = JSON.stringify(metadata)
+  }
+
   alignEmailToLowerCase: () => void = () => {
     this.email = this.email.toLowerCase()
   }
 
-  @BeforeInsert()
-  @BeforeUpdate()
   updatePassword: () => Promise<void> = async () => {
     if (!this.password) {
       return
