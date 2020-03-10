@@ -1,3 +1,12 @@
 [submodule "tasks"]
 	path = tasks
 	url = git@github.com:mazgi/cargo-make.tasks.git
+[submodule "Dockerfile.d/bff.development"]
+	path = Dockerfile.d/bff.development
+	url = git@github.com:mazgi/dockerfile.node-webapp-development.git
+[submodule "Dockerfile.d/frontend"]
+	path = Dockerfile.d/frontend
+	url = git@github.com:mazgi/dockerfile.node-webapp-development.git
+[submodule "Dockerfile.d/vscode"]
+	path = Dockerfile.d/vscode
+	url = git@github.com:mazgi/dockerfile.node-webapp-development.git
