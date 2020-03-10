@@ -4,6 +4,12 @@
 
 ## How to run
 
+### Update submodules
+
+```shellsession
+git submodule update --init --recursive
+```
+
 ### Download cargo-make
 
 Linux:
@@ -25,7 +31,7 @@ export CARGO_MAKE_VERSION="0.26.1" \
 ### Set up the project via cargo-make
 
 ```shellsession
-bin/cargo-make make --makefile tasks/setup-project.toml
+bin/cargo-make make --env-file=tasks.env --makefile=tasks/setup-project.toml
 ```
 
 ### Run via Docker Compose
@@ -37,7 +43,7 @@ docker-compose up
 ## How to build
 
 ```shellsession
-bin/cargo-make make --makefile tasks/build-production-images.toml
+bin/cargo-make make --makefile tasks.project-specific/build-production-images.toml
 ```
 
 ## How to Migrate DB
