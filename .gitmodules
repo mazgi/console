@@ -4,8 +4,8 @@
 [submodule "Dockerfile.d/bff.development"]
 	path = Dockerfile.d/bff.development
 	url = git@github.com:mazgi/dockerfile.node-webapp-development.git
-[submodule "Dockerfile.d/frontend"]
-	path = Dockerfile.d/frontend
+[submodule "Dockerfile.d/frontend.development"]
+	path = Dockerfile.d/frontend.development
 	url = git@github.com:mazgi/dockerfile.node-webapp-development.git
 [submodule "Dockerfile.d/vscode"]
 	path = Dockerfile.d/vscode
