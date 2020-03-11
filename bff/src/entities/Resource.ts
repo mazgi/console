@@ -3,6 +3,7 @@ import { Field, ID, ObjectType } from 'type-graphql'
 import { IsJSON, IsNotEmpty, validateOrReject } from 'class-validator'
 import ResourceControls, { defaultResourceControls } from './ResourceControls'
 import ResourceMetadata, { defaultResourceMetadata } from './ResourceMetadata'
+import ResourceStatus, { defaultResourceStatus } from './ResourceStatus'
 
 @ObjectType()
 @Entity()
@@ -21,31 +22,36 @@ class Resource {
   @Column({ type: 'text', nullable: true })
   description?: string
 
-  @Column({ type: 'json' })
-  @IsJSON()
-  serializedMetadata!: string
-  metadata?: ResourceMetadata
-
-  @Field({ nullable: true })
-  status?: string
+  @Field()
+  controls!: ResourceControls
 
   @Field()
-  controls?: ResourceControls
+  status!: ResourceStatus
+
+  @Column({ type: 'json' })
+  @IsNotEmpty()
+  @IsJSON()
+  serializedMetadata!: string
+  metadata!: ResourceMetadata
 
   validate: () => Promise<void> = async () => {
     await validateOrReject(this)
   }
 
   deserializeMetadata: () => Promise<void> = async () => {
+    console.log('metadata: ', this.serializedMetadata)
     const metadata = {
       ...defaultResourceMetadata,
-      ...this.deserializeMetadata
+      ...JSON.parse(this.serializedMetadata)
     }
     this.metadata = metadata
-    // TODO: status
     this.controls = {
       ...defaultResourceControls,
       ...this.metadata.controls
+    }
+    this.status = {
+      ...defaultResourceStatus,
+      ...this.metadata.status
     }
   }
 

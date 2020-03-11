@@ -22,7 +22,8 @@ class Document extends NextDocument {
           <meta
             name="app-endpoint"
             content=""
-            data-bff-endpoint-url={process.env.BFF_ENDPOINT_URL}
+            data-bff-endpoint-graphql-http={process.env.BFF_ENDPOINT_GRAPHQL_HTTP}
+            data-bff-endpoint-graphql-websocket={process.env.BFF_ENDPOINT_GRAPHQL_WEBSOCKET}
           />
         </Head>
         <body>

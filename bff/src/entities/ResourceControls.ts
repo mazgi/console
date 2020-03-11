@@ -13,9 +13,9 @@ class ResourceControls {
 }
 
 export const defaultResourceControls: ResourceControls = {
-  startable: true,
-  stoppable: true,
-  deletable: true
+  startable: false,
+  stoppable: false,
+  deletable: false
 }
 
 export default ResourceControls

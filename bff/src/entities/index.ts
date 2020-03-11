@@ -1,4 +1,7 @@
+export { default as Clan } from './Clan'
 export { default as Resource } from './Resource'
+export { default as ResourceAgent } from './ResourceAgent'
+export { default as ResourceAgentGoogle } from './ResourceAgentGoogle'
 export {
   default as ResourceControls,
   defaultResourceControls

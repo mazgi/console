@@ -81,7 +81,8 @@ services:
       - "${BIND_IP_ADDR:-127.0.0.1}:3000:3000"
     user: "${UID:-0}:${GID:-0}"
     environment:
-      - BFF_ENDPOINT_URL=http://${PUBLIC_IP_ADDR_OR_FQDN}:4000/graphql
+      - BFF_ENDPOINT_GRAPHQL_HTTP=http://${PUBLIC_IP_ADDR_OR_FQDN}:4000/graphql
+      - BFF_ENDPOINT_GRAPHQL_WEBSOCKET=ws://${PUBLIC_IP_ADDR_OR_FQDN}:4000/graphql
     command:
       - bash
       - -c

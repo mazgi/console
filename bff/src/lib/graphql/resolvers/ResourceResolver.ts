@@ -1,4 +1,11 @@
-import { Arg, Authorized, Mutation, Query, Resolver } from 'type-graphql'
+import {
+  Arg,
+  Authorized,
+  Mutation,
+  Query,
+  Resolver,
+  Subscription
+} from 'type-graphql'
 import { Resource, ResourceMetadata, defaultResourceMetadata } from 'entities'
 import { ResourceNotFoundError } from './ResourceNotFoundError'
 import { getRepository } from 'typeorm'
@@ -12,6 +19,7 @@ class ResourceResolver {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @Mutation(returns => Resource)
   async createResource(
+    @Arg('agentId') agentId: string,
     @Arg('name') name: string,
     @Arg('description', { nullable: true }) description?: string
   ): Promise<Resource> {
@@ -49,6 +57,20 @@ class ResourceResolver {
     return resource
   }
 
+  // TODO:
+  @Authorized()
+  @Subscription(returns => Resource, { topics: 'RESOURCE/STATUS' })
+  async resourceStatue(@Arg('id') id: string): Promise<Resource> {
+    const resource = await this.repository
+      .findOneOrFail({ where: { id } })
+      .catch(reason => {
+        const e = new Error(reason)
+        console.log(e)
+        throw e
+      })
+    return resource
+  }
+
   // @Authorized()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @Query(returns => [Resource])
@@ -74,6 +96,24 @@ class ResourceResolver {
       resource.description = undefined
     }
     await this.repository.save(resource)
+    return resource
+  }
+
+  // TODO:
+  @Authorized()
+  @Mutation(returns => Resource)
+  async updateResourceStatus(
+    @Arg('id') id: string,
+    @Arg('description', { nullable: true }) description?: string
+  ): Promise<Resource> {
+    const resource = await this.repository
+      .findOneOrFail({ where: { id } })
+      .catch(reason => {
+        const e = new Error(reason)
+        console.log(e)
+        throw e
+      })
+    // TODO:
     return resource
   }
 
