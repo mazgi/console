@@ -17,7 +17,27 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - uses: actions/checkout@v2
+      - name: Checkout submodules
+        shell: bash
+        run: |
+          git config --global url."https://github.com/".insteadOf "git@github.com:"
+          auth_header="$(git config --local --get http.https://github.com/.extraheader)"
+          git submodule sync --recursive
+          git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
+      - name: "TODO: setup project"
+        shell: bash
+        run: |
+          sudo mkdir -p /data/config/bff/
+          sudo chmod a+rwx /data/config/bff/
+          echo '{ "version": "2020.1.0-dev", "server": { "port": 4000, "origins": [ "http://127.0.0.1:3000" ] } }' > /data/config/bff/config.json
+          openssl genrsa -out /data/config/bff/key.pem 4096
+          openssl rsa -in /data/config/bff/key.pem -pubout -out /data/config/bff/pubkey.pem
+          openssl rand -base64 32 > /data/config/bff/secret.txt
+        if: matrix.service == 'bff'
       - run: npm install
         working-directory: ${{ matrix.service }}
       - run: npm run test:coverage
         working-directory: ${{ matrix.service }}
+        env:
+          BFF_ENDPOINT_GRAPHQL_HTTP: http://127.0.0.1:4000/graphql
+          BFF_ENDPOINT_GRAPHQL_WEBSOCKET: ws://127.0.0.1:4000/graphql
