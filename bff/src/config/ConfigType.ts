@@ -6,6 +6,7 @@ export type ConfigType = {
   isDevelopment: boolean
   privateKey: string
   publicKey: string
+  secret: string // Must be 256 bits (32 characters)
   db: ConnectionOptions
   redis: {
     host: string
