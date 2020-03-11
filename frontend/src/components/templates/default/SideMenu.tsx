@@ -1,5 +1,10 @@
 import * as icons from '@material-ui/icons'
-import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
+import {
+  Divider,
+  ListItem,
+  ListItemIcon,
+  ListItemText
+} from '@material-ui/core'
 import React, { Fragment } from 'react'
 import Link from 'next/link'
 import SideMenuInDevelopment from './SideMenuInDevelopment'
@@ -14,7 +19,7 @@ const Component: React.FC = () => {
       <Link href="/">
         <ListItem button>
           <ListItemIcon>
-            <icons.Link />
+            <icons.Dashboard />
           </ListItemIcon>
           <ListItemText primary="/" />
         </ListItem>
@@ -25,6 +30,15 @@ const Component: React.FC = () => {
             <icons.Link />
           </ListItemIcon>
           <ListItemText primary="resources" />
+        </ListItem>
+      </Link>
+      <Divider />
+      <Link href="/settings">
+        <ListItem button>
+          <ListItemIcon>
+            <icons.Settings />
+          </ListItemIcon>
+          <ListItemText primary="settings" />
         </ListItem>
       </Link>
       {isDev && <SideMenuInDevelopment />}

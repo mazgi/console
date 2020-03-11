@@ -1,4 +1,6 @@
 export { default as DashboardResolver } from './DashboardResolver'
+export { default as NotificationResolver } from './NotificationResolver'
+export { default as ResourceAgentResolver } from './ResourceAgentResolver'
 export { default as ResourceResolver } from './ResourceResolver'
 export { default as ResourceTemplateResolver } from './ResourceTemplateResolver'
 export { default as UserResolver } from './UserResolver'

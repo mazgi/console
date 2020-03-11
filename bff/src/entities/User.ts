@@ -1,19 +1,18 @@
 import * as bcrypt from 'bcrypt'
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn
+} from 'typeorm'
 import { Field, ID, ObjectType } from 'type-graphql'
 import { IsEmail, IsJSON, IsNotEmpty, validateOrReject } from 'class-validator'
+import UserControls, { defaultUserControls } from './UserControls'
+import UserMetadata, { defaultUserMetadata } from './UserMetadata'
+import Clan from './Clan'
 import ValidationError from 'lib/validator/ValidationError'
 import validatePassword from 'lib/validator/validatePassword'
-
-@ObjectType()
-class UserMetadata {
-  @Field()
-  version!: string
-}
-
-const defaultMetadata: UserMetadata = {
-  version: '2020.02.0'
-}
 
 @ObjectType()
 @Entity()
@@ -22,6 +21,14 @@ class User {
   @Field(type => ID)
   @PrimaryGeneratedColumn('uuid')
   id!: string
+
+  @ManyToMany(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    type => Clan,
+    clan => clan.users
+  )
+  @JoinTable()
+  clans!: Clan[]
 
   @Field()
   @Column({
@@ -54,8 +61,13 @@ class User {
   @Column({ type: 'json' })
   @IsJSON()
   serializedMetadata!: string
-  @Field()
   metadata!: UserMetadata
+
+  @Field({ nullable: true })
+  status?: string
+
+  @Field()
+  controls?: UserControls
 
   validate: () => Promise<void> = async () => {
     await validateOrReject(this)
@@ -63,15 +75,19 @@ class User {
 
   deserializeMetadata: () => Promise<void> = async () => {
     const metadata = {
-      ...defaultMetadata,
+      ...defaultUserMetadata,
       ...this.deserializeMetadata
     }
     this.metadata = metadata
+    this.controls = {
+      ...defaultUserControls,
+      ...this.metadata.controls
+    }
   }
 
   serializeMetadata: () => Promise<void> = async () => {
     const metadata = {
-      ...defaultMetadata,
+      ...defaultUserMetadata,
       ...this.metadata
     }
     this.serializedMetadata = JSON.stringify(metadata)

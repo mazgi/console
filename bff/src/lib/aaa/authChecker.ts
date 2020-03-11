@@ -12,7 +12,7 @@ type RoleDefinition = {
   targetResource: 'ALL' | 'ANY' | 'SELF' | string
 }[]
 
-const authChecker: AuthChecker<Context, RoleDefinition> = async (
+export const authChecker: AuthChecker<Context, RoleDefinition> = async (
   { context },
   roles
 ) => {
@@ -20,9 +20,14 @@ const authChecker: AuthChecker<Context, RoleDefinition> = async (
   const repository = getRepository(User)
   let token = context.request.cookies.token
   if (!token) {
-    const e = new AuthenticationError('The token is null.')
+    // TODO: i18n w/ gettext like system
+    //  1. read accept-lang header
+    //  2. choose a message from message table
+    //  3. set the message to error object
+    // const e = new AuthenticationError('The token is null.')
+    const e = new AuthenticationError('トークンが空です')
     console.log(e)
-    throw e
+    // throw e
   }
   config.isDevelopment && console.log(`roles: `, roles, `, token: `, token)
   if (config.isDevelopment && !token) {
@@ -37,7 +42,7 @@ const authChecker: AuthChecker<Context, RoleDefinition> = async (
   if (!verified) {
     const e = new AuthenticationError('The token cannot be verified.')
     console.log(e)
-    return false
+    throw e
   }
   const user = await repository.findOneOrFail({
     where: { id: payload.id }
@@ -50,5 +55,3 @@ const authChecker: AuthChecker<Context, RoleDefinition> = async (
   saveTokenToResponseCookie(context.response, newToken)
   return !!payload
 }
-
-export default authChecker

@@ -8,7 +8,7 @@ import {
 } from 'lib/graphql/resolvers'
 import { IncomingMessage, ServerResponse } from 'http'
 import Config from 'config'
-import authChecker from 'lib/aaa/authChecker'
+import { authChecker } from 'lib/aaa/authChecker'
 import { buildSchema } from 'type-graphql'
 import graphqlHTTP from 'express-graphql'
 

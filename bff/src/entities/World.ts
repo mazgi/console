@@ -1,6 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { Field, ID, ObjectType } from 'type-graphql'
 import { IsJSON, IsNotEmpty, validateOrReject } from 'class-validator'
+import Clan from './Clan'
 
 @ObjectType()
 class WorldMetadata {
@@ -19,6 +20,13 @@ class World {
   @Field(type => ID)
   @PrimaryGeneratedColumn('uuid')
   id!: string
+
+  @OneToMany(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    type => Clan,
+    clan => clan.world
+  )
+  clans!: Clan[]
 
   @Field()
   @Column({

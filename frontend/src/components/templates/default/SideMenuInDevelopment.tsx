@@ -25,7 +25,7 @@ const Component: React.FC = () => {
       <Link href="/signin">
         <ListItem button>
           <ListItemIcon>
-            <icons.Link />
+            <icons.Build />
           </ListItemIcon>
           <ListItemText primary="signin" />
         </ListItem>
@@ -33,7 +33,7 @@ const Component: React.FC = () => {
       <Link href="/resource-templates">
         <ListItem button>
           <ListItemIcon>
-            <icons.Link />
+            <icons.Build />
           </ListItemIcon>
           <ListItemText primary="resource templates" />
         </ListItem>
@@ -52,6 +52,14 @@ const Component: React.FC = () => {
             <icons.Build />
           </ListItemIcon>
           <ListItemText primary="users" />
+        </ListItem>
+      </Link>
+      <Link href="/user/create">
+        <ListItem button>
+          <ListItemIcon>
+            <icons.Build />
+          </ListItemIcon>
+          <ListItemText primary="create a user" />
         </ListItem>
       </Link>
     </Fragment>

@@ -1,5 +1,6 @@
 import {
   CircularProgress,
+  LinearProgress,
   Paper,
   Table,
   TableBody,
@@ -62,7 +63,7 @@ const Component: React.FC<Props> = (props: Props) => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Start / Stop</TableCell>
+            <TableCell>Stop / Start</TableCell>
             <TableCell>Name</TableCell>
             <TableCell>Delete</TableCell>
           </TableRow>
@@ -78,7 +79,10 @@ const Component: React.FC<Props> = (props: Props) => {
                   willTurnOnHandler={resourcePowerWillTurnOn}
                   willTurnOffHandler={resourcePowerWillTurnOff}
                 />
-                <TableCell>{resource.name}</TableCell>
+                <TableCell>
+                  <p>{resource.name}</p>
+                  {loading && <LinearProgress />}
+                </TableCell>
                 <ResourceControlTableCell
                   resource={resource}
                   willDeleteHandler={resourceWillDelete}
